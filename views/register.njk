@@ -1,0 +1,47 @@
+{% extends "base.njk" %}
+{% block content %}
+    <div class="container-fluid py-5">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <h1>Register</h1>
+            <form action="/register" method="post" class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col">
+                        <label for="inputFirstName" class="form-label">First Name</label>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" required>
+                    </div>
+                    <div class="col">
+                        <label for="inputSurname" class="form-label">Surname</label>
+                        <input type="text" name="surname" class="form-control" id="inputSurname" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputDateOfBirth" class="form-label">Date of Birth</label>
+                    <input type="date" name="dateOfBirth" class="form-control" id="inputDateOfBirth" required>
+                </div>
+                <div class="mb-3">
+                    <label for="inputUsername" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="inputUsername" pattern={{ schema.username.match }} required>
+                    <div class="invalid-feedback">
+                        Usernames must be 5 chars or more and may contain only letters, numbers, period, and underscore characters.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputEmail" class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" required>
+                     <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="inputPassword" pattern={{ schema.password.match }} required>
+                    <div class="invalid-feedback">
+                        Passwords must be at least eight characters long and contain at least one number and special character.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script src="validate.js">
+{% endblock %}
