@@ -49,4 +49,4 @@ app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
 
-app.listen(3000);
+app.listen(process.env.PORT);

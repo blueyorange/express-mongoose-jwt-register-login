@@ -3,8 +3,8 @@ exports.handleInvalidUrlErrors = (req, res) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  if (res.status) {
-    res.status(err.status).send({ msg: err.msg });
+  if (err._message.includes("validation")) {
+    res.status(400).send();
   } else {
     next(err);
   }

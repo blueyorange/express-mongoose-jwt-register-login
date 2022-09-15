@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res, next) => {
   const { firstname, surname, dateOfBirth, username, email, password } =
     req.body;
-  console.log({ firstname, surname, dateOfBirth, username, email, password });
   const user = new User({
     firstname,
     surname,
@@ -24,13 +23,12 @@ router.post("/", async (req, res, next) => {
     email,
     password,
   });
-  try {
-    user.save();
-    return res.status(201).redirect("/login");
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
+  user
+    .save()
+    .then(() => {
+      return res.status(201).redirect("/login");
+    })
+    .catch(next);
 });
 
 module.exports = router;
