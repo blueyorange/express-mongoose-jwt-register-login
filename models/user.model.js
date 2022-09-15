@@ -19,8 +19,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    // usernames must be 5 chars or more and may contain only letters, numbers, period, underscore
-    match: /^([A-Za-z]+)([A-Za-z0-9_.]){4,}$/,
+    message: "Must contain at least 5 characters and no spaces",
+    // usernames must be 5 chars or more and may contain no spaces
+    match: /^[.\S]{5,}$/,
   },
   email: {
     type: String,
@@ -29,9 +30,8 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    // password must contain at least 8 characters, one capital, one lowercase, one number, one special
-    match:
-      /^(?=.*[A-Z])(?=.*[!@£$%^&*()_+{}:"|<>?~`,./;'])(?=.*[0-9])(?=.*[a-z]).{8,}$/,
+    message: "Must contain at least 8 characters and no spaces",
+    match: /^[.\S]{8,}/,
   },
 });
 

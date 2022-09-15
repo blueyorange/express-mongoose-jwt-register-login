@@ -10,6 +10,7 @@ Content-Type: application/json
     "surname" : "Johnson",
     "username" : "pooeyorange",
     "email" : "pooeyorange@gmail.com",
+    "dateOfBirth" : "1980-06-28",
     "password" : "wowPassword%6"
 }
 
