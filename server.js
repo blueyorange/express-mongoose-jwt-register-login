@@ -12,6 +12,7 @@ const {
 // routes
 const index = require("./routes/index.routes.js");
 const login = require("./routes/login.routes.js");
+const logout = require("./routes/logout.routes.js");
 const register = require("./routes/register.routes.js");
 
 const app = express();
@@ -43,6 +44,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // routes
 app.use("/login", login);
+app.use("/logout", logout);
 app.use("/register", register);
 app.use("/", index);
 app.all("*", handleInvalidUrlErrors);

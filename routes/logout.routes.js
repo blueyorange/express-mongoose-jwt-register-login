@@ -3,13 +3,7 @@ const router = express.Router();
 const auth = require("../auth/auth.js");
 
 router.get("/", auth, (req, res) => {
-  const user = req.user;
-  console.log(user);
-  if (!user) {
-    return res.redirect("/login");
-  } else {
-    return res.render("index.njk", user);
-  }
+  return res.clearCookie("access_token").status(200).redirect("/login");
 });
 
 module.exports = router;

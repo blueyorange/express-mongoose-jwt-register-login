@@ -8,10 +8,10 @@ Content-Type: application/json
 {
     "name" : "Russell",
     "surname" : "Johnson",
-    "username" : "asssda",
-    "email" : "adsas@gmail.com",
+    "username" : "blueyorange",
+    "email" : "blueyorange@gmail.com",
     "dateOfBirth" : "1980-06-28",
-    "password" : "wowPassword%6"
+    "password" : "yaypassword"
 }
 
 ###
