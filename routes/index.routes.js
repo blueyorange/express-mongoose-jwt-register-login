@@ -4,7 +4,6 @@ const auth = require("../auth/auth.js");
 
 router.get("/", auth, (req, res) => {
   const user = req.user;
-  console.log(user);
   if (!user) {
     return res.redirect("/login");
   } else {
