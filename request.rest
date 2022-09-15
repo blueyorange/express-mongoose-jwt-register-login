@@ -8,8 +8,9 @@ Content-Type: application/json
 {
     "firstname" : "Russell",
     "surname" : "Johnson",
-    "username" : "blueyorange2",
-    "password" : "password"
+    "username" : "pooeyorange",
+    "email" : "pooeyorange@gmail.com",
+    "password" : "wowPassword%6"
 }
 
 ###
@@ -18,7 +19,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "name" : "blueyorange",
+    "username" : "blueyorange",
     "password" : "password"
 }
 

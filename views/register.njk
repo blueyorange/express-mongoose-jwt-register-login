@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputUsername" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="inputUsername" pattern={{ schema.username.match }} required>
+                    <input type="text" name="username" class="form-control" id="inputUsername" pattern={{ schema.username.match.toString().slice(1,-1) }} required>
                     <div class="invalid-feedback">
                         Usernames must be five characters or more and may contain only letters, numbers, period, and underscore characters.
                     </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="inputPassword" pattern={{ schema.password.match }} required>
+                    <input type="password" name="password" class="form-control" id="inputPassword" pattern={{ schema.password.match.toString().slice(1,-1) }} required>
                     <div class="invalid-feedback">
                         Passwords must be at least eight characters long and contain at least one number and special character.
                     </div>
