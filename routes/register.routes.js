@@ -7,11 +7,10 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { firstname, surname, dateOfBirth, username, email, password } =
-    req.body;
-  console.log(dateOfBirth);
+  const { name, surname, dateOfBirth, username, email, password } = req.body;
+  console.log(req.body);
   const user = new User({
-    firstname,
+    name,
     surname,
     dateOfBirth,
     username,

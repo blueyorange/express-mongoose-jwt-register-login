@@ -4,7 +4,7 @@ exports.handleInvalidUrlErrors = (req, res) => {
 
 exports.handleCustomErrors = (err, req, res, next) => {
   if (err._message.includes("validation")) {
-    res.status(400).send();
+    res.status(400).render(register);
   } else {
     next(err);
   }
