@@ -1,0 +1,49 @@
+{% extends 'base.njk' %}
+{% block content %}
+    <div class="container-fluid py-5">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <h1>{{ profile.name }}
+                {{ profile.surname }}
+            </h1>
+            {% if profile.canEdit %}
+                <form action="/users/{{ profile.username }}" method="post" class="needs-validation" novalidate>
+                <input type="hidden" name="_id" value="{{ profile._id }}"/>
+                    <div class="row">
+                        <div class="col">
+                            <label for="inputName" class="form-label">First Name</label>
+                            <input name="name" type="text" class="form-control" id="inputName" value="{{ profile.name }}" /></div>
+                        <div class="col">
+                            <label for="inputSurname" class="form-label">Surname</label>
+                            <input type="text" name="surname" class="form-control" id="inputSurname" value="{{ profile.surname }}" /></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputDateOfBirth" class="form-label">Date of Birth</label>
+                        <input type="date" name="dateOfBirth" class="form-control" id="inputDateOfBirth" value="{{ profile.dateOfBirth}}" required/></div>
+                    <div class="mb-3">
+                        <label for="inputUsername" class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" id="inputUsername" pattern="{{ schema.username.match.toString().slice(1,-1) }}" value="{{ profile.username }}" />
+                        <div class="invalid-feedback">
+                            "{{ schema.username.message }}"
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">Email address</label>
+                        <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" value="{{ profile.email }}" />
+                        <div class="invalid-feedback">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword" class="form-label">New Password</label>
+                        <input type="password" name="password" class="form-control" id="inputPassword" pattern="{{ schema.password.match.toString().slice(1,-1) }}" />
+                        <div class="invalid-feedback">
+                            "{{ schema.password.message }}"
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+<script src="../validate.js">
+{% endblock %}

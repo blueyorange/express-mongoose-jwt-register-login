@@ -20,9 +20,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputUsername" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="inputUsername" pattern={{ schema.username.match.toString().slice(1,-1) }} required>
+                    <input type="text" name="username" class="form-control" id="inputUsername" pattern="{{ schema.username.match.toString().slice(1,-1) }}" required>
                     <div class="invalid-feedback">
-                        {{ schema.username.message }}
+                        "{{ schema.username.message }}"
                     </div>
                 </div>
                 <div class="mb-3">
@@ -34,9 +34,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="inputPassword" pattern={{ schema.password.match.toString().slice(1,-1) }} required>
+                    <input type="password" name="password" class="form-control" id="inputPassword" pattern="{{ schema.password.match.toString().slice(1,-1) }}" required>
                     <div class="invalid-feedback">
-                        {{ schema.password.message }}
+                        "{{ schema.password.message }}"
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

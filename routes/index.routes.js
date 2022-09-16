@@ -3,11 +3,11 @@ const router = express.Router();
 const auth = require("../auth/auth.js");
 
 router.get("/", auth, (req, res) => {
-  const user = req.user;
-  if (!user) {
-    return res.redirect("/login");
+  const loggedInUser = req.user;
+  if (loggedInUser) {
+    return res.render("index.njk", { loggedInUser });
   } else {
-    return res.render("index.njk", user);
+    return res.redirect("/login");
   }
 });
 

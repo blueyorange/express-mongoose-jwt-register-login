@@ -15,7 +15,7 @@ router.post("/", async (req, res, next) => {
   if (user == null) {
     return res.render("login.njk", { error });
   }
-  bcrypt
+  return bcrypt
     .compare(req.body.password, user.password)
     .then((valid) => {
       if (valid) {

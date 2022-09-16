@@ -30,18 +30,12 @@
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div
-            class="collapse navbar-collapse" id="navbarSupportedContent">
-            {# <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                                  <li class="nav-item d-flex">
-                                                    <a class="nav-link disabled">asdasdsa</a>
-                                                  </li>
-                                                </ul> #}
-            {% if user %}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if loggedInUser %}
               <ul class="navbar-nav ms-auto">
                 <li class="nav-item d-flex">
-                  <a href="/users/{{ user.username }}" class="btn btn-link">
-                    {{ user.username }}
+                  <a href="/users/{{ loggedInUser.username }}" class="btn btn-link">
+                    {{ loggedInUser.username }}
                   </a>
                 </li>
                 <li class="nav-item d-flex">

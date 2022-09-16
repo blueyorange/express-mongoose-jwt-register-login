@@ -1,4 +1,4 @@
-// Example starter JavaScript for disabling form submissions if there are invalid fields
+// Bootstrap client side form validation
 (function () {
   "use strict";
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
