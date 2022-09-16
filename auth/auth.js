@@ -10,7 +10,7 @@ const auth = (req, _, next) => {
     return next();
   } catch {
     req.user = undefined;
-    return next();
+    return res.status(401).redirect("logout.njk");
   }
 };
 
