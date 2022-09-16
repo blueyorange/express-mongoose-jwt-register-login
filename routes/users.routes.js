@@ -3,17 +3,12 @@ const router = express.Router();
 const auth = require("../auth/auth.js");
 const User = require("../models/user.model.js");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 router.get("/:username", auth, async (req, res, next) => {
   const { username } = req.params;
   return User.findOne({ username })
-    .then((user) => {
-      const dateOfBirth = moment(user.dateOfBirth)
-        .format("YYYY-MM-DD")
-        .toString()
-        .slice(0, 10);
-      const profile = { ...user._doc, dateOfBirth };
-      console.log(profile);
+    .then((profile) => {
       const loggedInUser = req.user;
       if (profile) {
         if (profile.username === loggedInUser.username) {
@@ -21,7 +16,7 @@ router.get("/:username", auth, async (req, res, next) => {
         } else {
           profile.canEdit = false;
         }
-        return res.render("users.njk", {
+        return res.render("userProfile.njk", {
           loggedInUser: req.user,
           profile,
           schema: User.schema.obj,
@@ -34,7 +29,6 @@ router.get("/:username", auth, async (req, res, next) => {
 });
 
 router.post("/:username", auth, async (req, res, next) => {
-  console.log(req.body);
   if (req.body.username === req.user.username) {
     const update = req.body;
     const filter = { _id: req.body._id };
@@ -46,13 +40,29 @@ router.post("/:username", auth, async (req, res, next) => {
         httpOnly: true,
         overwrite: true,
       })
-      .render("users.njk", {
+      .render("userProfile.njk", {
         loggedInUser: req.user,
         profile,
         schema: User.schema.obj,
       });
   } else {
     return res.status(401);
+  }
+});
+
+router.post("/:username/changepassword", auth, async (req, res) => {
+  const isLoggedIn = req.user;
+  const isAuthorised = req.body.username === req.user.username;
+  const user = await User.findOne({ _id });
+  const oldPasswordMatchesCurrent = await bcrypt.compare(
+    user.password,
+    req.body.oldPassword
+  );
+  if (isLoggedIn && isAuthorised && oldPasswordMatchesCurrent) {
+    user.password = req.newPassword;
+    user.save();
+  } else {
+    return res.status(401).render("userProfile.njk", { invalidPassword: true });
   }
 });
 
