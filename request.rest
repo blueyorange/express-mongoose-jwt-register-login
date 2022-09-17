@@ -11,7 +11,7 @@ Content-Type: application/json
     "username" : "blueyorange",
     "email" : "blueyorange@gmail.com",
     "dateOfBirth" : "1980-06-28",
-    "password" : "yaypassword"
+    "password" : "plrdzbvq&1"
 }
 
 ###
@@ -28,3 +28,12 @@ Content-Type: application/json
 GET http://localhost:3000/
 
 ###
+
+POST http://localhost:3000/users/blueyorange/changepassword
+Content-Type: application/json
+
+{
+    "_id" : "63249839e6d2692b944f7403",
+    "oldPassword" : "plrdzbvq&1",
+    "newPassword" : "password"
+}
