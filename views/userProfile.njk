@@ -1,6 +1,6 @@
 {% extends 'base.njk' %}
 {% block content %}
-    <div class="container-fluid py-5">
+    <div class="container-sm py-5">
         <div class="p-5 mb-4 bg-light rounded-3">
             <h1>{{ profile.name }}
                 {{ profile.surname }}
@@ -33,33 +33,48 @@
                             Please enter a valid email address.
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="inputPassword" class="form-label">New Password</label>
-                        <input type="password" name="password" class="form-control" id="inputPassword" pattern="{{ schema.password.match.toString().slice(1,-1) }}"/>
-                        <div class="invalid-feedback">
-                            "{{ schema.password.message }}"
-                        </div>
-                    </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             {% endif %}
         </div>
-    </div>
-    <div class="p-5 mb-4 bg-light rounded-3">
-        <h2>Change password</h2>
-        <form action="/users/{{ profile.username }}/changepassword" method="post" class="needs-validation" novalidate>
-            <input type="hidden" name="_id" value="{{ profile._id }}"/>
-            {% if invalidPassword %}
-                <div class="alert alert-danger">Password incorrect</div>
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <h2>Change password</h2>
+            {% if passwordChange==="success" %}
+                <div class="alert alert-success">Password updated!</div>
             {% endif %}
-            <label for="password" class="form-label">Old Password</label>
-            <input type="password" name="oldPassword" class="form-control" id="password"/>
-            <label for="newPassword" class="form-label">New Password</label>
-            <input type="password" name="newPassword" class="form-control" id="newPassword" pattern="{{ schema.password.match.toString().slice(1,-1) }}"/>
-            <div class="invalid-feedback">
-                "{{ schema.password.message }}"
-            </div>
-        </form>
+            {% if passwordChange==="incorrect" %}
+                <div class="alert alert-danger">Password incorrect.</div>
+            {% endif %}
+            {% if passwordChange==="error" %}
+                <div class="alert alert-danger">Server error. Password not updated.</div>
+            {% endif %}
+            <form
+                action="/users/{{ profile.username }}/changepassword"
+                method="post"
+                class="needs-validation"
+                autocomplete="off"
+                novalidate>
+                <input type="hidden" name="_id" value="{{ profile._id }}"/>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Old Password</label>
+                    <input type="password" name="oldPassword" class="form-control" id="password"/>
+                </div>
+                {% if invalidPassword %}
+                    <div class="alert alert-danger">Password incorrect</div>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <input type="password" name="newPassword" class="form-control mb-3" id="newPassword" autocomplete="new-password" pattern="{{ schema.password.match.toString().slice(1,-1) }}"/>
+                </div>
+                <div class="invalid-feedback mb-3">
+                    "{{ schema.password.message }}"
+                </div>
+                <button type="submit" class="btn btn-danger">
+                    {% if setPassword==="true" %}{% endif %}
+                    Change password
+                </button>
+            </form>
+        </div>
     </div>
     <script src="../validate.js"></script>
 {% endblock %}

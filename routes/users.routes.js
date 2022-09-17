@@ -6,20 +6,22 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 router.get("/:username", auth, async (req, res, next) => {
+  const {passwordChange} = req.query
   const { username } = req.params;
   return User.findOne({ username })
     .then((profile) => {
-      const loggedInUser = req.user;
+      const currentUser = req.user;
       if (profile) {
-        if (profile.username === loggedInUser.username) {
+        if (profile.username === currentUser.username) {
           profile.canEdit = true;
         } else {
           profile.canEdit = false;
         }
         return res.render("userProfile.njk", {
-          loggedInUser: req.user,
+          currentUser,
           profile,
           schema: User.schema.obj,
+          passwordChange
         });
       } else {
         return res.render("404.njk");
@@ -41,7 +43,8 @@ router.post("/:username", auth, async (req, res, next) => {
         overwrite: true,
       })
       .render("userProfile.njk", {
-        loggedInUser: req.user,
+        setPassword: req.query.setPassword,
+        currentUser: req.user,
         profile,
         schema: User.schema.obj,
       });
@@ -51,18 +54,32 @@ router.post("/:username", auth, async (req, res, next) => {
 });
 
 router.post("/:username/changepassword", auth, async (req, res) => {
+  console.log("updating password...");
   const isLoggedIn = req.user;
-  const isAuthorised = req.body.username === req.user.username;
-  const user = await User.findOne({ _id });
-  const oldPasswordMatchesCurrent = await bcrypt.compare(
-    user.password,
-    req.body.oldPassword
+  const isAuthorised = req.body._id === req.user._id;
+  const user = await User.findById(req.body._id).exec();
+  const oldPasswordCorrect = await bcrypt.compare(
+    req.body.oldPassword,
+    user.password
   );
-  if (isLoggedIn && isAuthorised && oldPasswordMatchesCurrent) {
-    user.password = req.newPassword;
-    user.save();
+  console.log(isLoggedIn, isAuthorised, oldPasswordCorrect);
+  if (isLoggedIn && isAuthorised && oldPasswordCorrect) {
+    user.password = req.body.newPassword;
+    user
+      .save()
+      .then((profile) => {
+        // success
+        console.log(profile)
+        return res.redirect(`/users/${req.params.username}?passwordChange=success`);
+      })
+      .catch(() => {
+        // error
+        console.log('database error')
+        return res.redirect(`/users/${req.params.username}?passwordChange=error`);
+      });
   } else {
-    return res.status(401).render("userProfile.njk", { invalidPassword: true });
+    // unauthorised
+        return res.redirect(`/users/${req.params.username}?passwordChange=fail`);
   }
 });
 
