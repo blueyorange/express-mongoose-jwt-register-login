@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const auth = (req, _, next) => {
+const auth = (req, res, next) => {
   const token = req.cookies.access_token;
   if (!token) {
     req.user = undefined;
@@ -10,7 +10,7 @@ const auth = (req, _, next) => {
     return next();
   } catch {
     req.user = undefined;
-    return res.status(401).redirect("logout.njk");
+    return res.status(401).redirect("/login");
   }
 };
 
