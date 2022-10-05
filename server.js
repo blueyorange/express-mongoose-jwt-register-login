@@ -10,11 +10,11 @@ const {
 } = require("./errors/errors");
 
 // routes
-const index = require("./routes/index.routes.js");
-const login = require("./routes/login.routes.js");
-const logout = require("./routes/logout.routes.js");
-const register = require("./routes/register.routes.js");
-const users = require("./routes/users.routes.js");
+const index = require("./routes/index.js");
+const auth = require("./routes/auth.js");
+const logout = require("./routes/logout.js");
+const register = require("./routes/register.js");
+const users = require("./routes/users.js");
 
 const app = express();
 
