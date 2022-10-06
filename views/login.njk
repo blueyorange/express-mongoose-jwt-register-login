@@ -8,7 +8,7 @@
                 {% if (error) %}
                     <div class="alert alert-danger">{{ error }}</div>
                 {% endif %}
-                <form action="/login" method="POST">
+                <form action="/auth/login/password" method="POST">
                     <div class="mb-3">
                         <label for="inputUsername" class="form-label">Username</label>
                         <input type="text" name="username" class="form-control" id="inputUsername">

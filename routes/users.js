@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../auth/auth.js");
 const User = require("../models/user.model.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-router.get("/:username", auth, async (req, res, next) => {
+router.get("/:username", async (req, res, next) => {
   const {passwordChange} = req.query
   const { username } = req.params;
   return User.findOne({ username })
@@ -30,7 +29,7 @@ router.get("/:username", auth, async (req, res, next) => {
     .catch(next);
 });
 
-router.post("/:username", auth, async (req, res, next) => {
+router.post("/:username", async (req, res, next) => {
   if (req.body.username === req.user.username) {
     const update = req.body;
     const filter = { _id: req.body._id };
@@ -53,7 +52,7 @@ router.post("/:username", auth, async (req, res, next) => {
   }
 });
 
-router.post("/:username/changepassword", auth, async (req, res) => {
+router.post("/:username/changepassword", async (req, res) => {
   console.log("updating password...");
   const isLoggedIn = req.user;
   const isAuthorised = req.body._id === req.user._id;

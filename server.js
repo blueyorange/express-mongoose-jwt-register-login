@@ -8,11 +8,13 @@ const {
   handleCustomErrors,
   handleServerErrors,
 } = require("./errors/errors");
+var passport = require('passport');
+var session = require('express-session');
+const MongoStore = require('connect-mongo')
 
 // routes
 const index = require("./routes/index.js");
 const auth = require("./routes/auth.js");
-const logout = require("./routes/logout.js");
 const register = require("./routes/register.js");
 const users = require("./routes/users.js");
 
@@ -23,6 +25,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
+app.use(session({
+  secret: process.env.SECRET,
+  store: MongoStore.create({mongoUrl: process.env.MONGO_URI}),
+  saveUninitialized: false,
+  resave: false,
+  // cookie: {secure: true}
+}));
+app.use(passport.authenticate('session'));
 
 // SS rendering
 nunjucks.configure("views", {
@@ -44,8 +54,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // routes
-app.use("/login", login);
-app.use("/logout", logout);
+app.use("/auth", auth);
 app.use("/register", register);
 app.use("/users", users);
 app.use("/", index);

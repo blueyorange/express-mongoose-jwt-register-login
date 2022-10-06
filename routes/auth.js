@@ -1,36 +1,41 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
+var bcrypt = require('bcrypt');
 const User = require("../models/user.model.js");
 
-router.get("/", (req, res) => {
+passport.use(new LocalStrategy(async function verify(username, password, cb) {
+  const user = await User.findOne({username});
+  if (!user) return cb(null, false, { message: 'Incorrect username or password.' });
+  const match = await bcrypt.compare(password, user.password)
+  console.log(match)
+  if (match) {
+    console.log("password match")
+    return cb(null, user)
+  } else {
+    console.log("Incorrect password")
+    return cb(null, false, {message: 'Incorrect username or password.'})
+  }
+}));
+
+passport.serializeUser(function(user, cb) {
+  console.log("serializing...");
+  cb(null, user._id);
+});
+
+passport.deserializeUser(function(_id, cb) {
+  console.log("deserializing...")
+  User.findById(_id).then(user => cb(null, user))
+});
+
+router.get("/login", (req, res) => {
   return res.render("login.njk");
 });
 
-router.post("/", async (req, res, next) => {
-  const { username } = req.body;
-  const user = await User.findOne({ username });
-  const error = "Invalid username or password";
-  if (user == null) {
-    return res.render("login.njk", { error });
-  }
-  return bcrypt
-    .compare(req.body.password, user.password)
-    .then((valid) => {
-      if (valid) {
-        const token = jwt.sign({ user }, process.env.JWT_SECRET_KEY);
-        return res
-          .cookie("access_token", token, {
-            httpOnly: true,
-          })
-          .status(200)
-          .redirect("/");
-      } else {
-        return res.render("login.njk", { error });
-      }
-    })
-    .catch(next);
-});
+router.post('/login/password', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/auth/404'
+}));
 
 module.exports = router;
