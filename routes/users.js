@@ -53,7 +53,6 @@ router.post("/:username", async (req, res, next) => {
 });
 
 router.post("/:username/changepassword", async (req, res) => {
-  console.log("updating password...");
   const isLoggedIn = req.user;
   const isAuthorised = req.body._id === req.user._id;
   const user = await User.findById(req.body._id).exec();
@@ -61,19 +60,16 @@ router.post("/:username/changepassword", async (req, res) => {
     req.body.oldPassword,
     user.password
   );
-  console.log(isLoggedIn, isAuthorised, oldPasswordCorrect);
   if (isLoggedIn && isAuthorised && oldPasswordCorrect) {
     user.password = req.body.newPassword;
     user
       .save()
       .then((profile) => {
         // success
-        console.log(profile)
         return res.redirect(`/users/${req.params.username}?passwordChange=success`);
       })
       .catch(() => {
         // error
-        console.log('database error')
         return res.redirect(`/users/${req.params.username}?passwordChange=error`);
       });
   } else {
