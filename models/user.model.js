@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
+  source : {type: String, required: [true, "source not specified"]},
+  id : {type: String, default: null},
   name: {
     type: String,
     required: true,
@@ -13,23 +15,19 @@ const UserSchema = new mongoose.Schema({
   },
   dateOfBirth: {
     type: String,
-    required: true,
   },
   username: {
     type: String,
     required: true,
-    unique: true,
-    message: "Must contain at least 5 characters and no spaces",
-    // usernames must be 5 chars or more and may contain no spaces
-    match: /^[.\S]{5,}$/,
+    // message: "Must contain at least 5 characters and no spaces",
+    // // usernames must be 5 chars or more
+    // match: /^[.\s]{5,}$/,
   },
   email: {
     type: String,
-    required: true,
   },
   password: {
     type: String,
-    required: true,
     message: "Must contain at least 8 characters and no spaces",
     match: /^[.\S]{8,}/,
   },
