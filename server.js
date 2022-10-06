@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const nunjucks = require("nunjucks");
 const mongoose = require("mongoose");
+const flash = require('connect-flash')
 require("dotenv").config();
 const {
   handleInvalidUrlErrors,
@@ -30,9 +31,10 @@ app.use(session({
   store: MongoStore.create({mongoUrl: process.env.MONGO_URI}),
   saveUninitialized: false,
   resave: false,
-  // cookie: {secure: true}
+  // cookie: {secure: true} // for use with HTTPS
 }));
 app.use(passport.authenticate('session'));
+app.use(flash())
 
 // SS rendering
 nunjucks.configure("views", {
@@ -54,10 +56,10 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // routes
+app.use("/", index);
 app.use("/auth", auth);
 app.use("/register", register);
 app.use("/users", users);
-app.use("/", index);
 app.all("*", handleInvalidUrlErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);

@@ -25,12 +25,22 @@ passport.deserializeUser(function(_id, cb) {
 });
 
 router.get("/login", (req, res) => {
-  return res.render("login.njk");
+  return res.render("login.njk", 
+  {error : req.flash('error')[0]}
+);
 });
 
 router.post('/login/password', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/auth/404'
+  failureRedirect: '/auth/login',
+  failureFlash: true,
 }));
+
+router.get('/logout', function(req, res, next) {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
 
 module.exports = router;
