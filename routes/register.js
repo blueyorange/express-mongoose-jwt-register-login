@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model.js");
 
-router.get("/", async (req, res) => {
+router.get("/", (req, res) => {
   return res.render("register.njk", { schema: User.schema.obj });
 });
 

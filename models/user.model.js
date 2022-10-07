@@ -19,9 +19,9 @@ const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    // message: "Must contain at least 5 characters and no spaces",
-    // // usernames must be 5 chars or more
-    // match: /^[.\s]{5,}$/,
+    message: "Must contain at least 5 characters can include spaces",
+    // usernames must be 5 chars or more
+    match: /^[.\s]{5,}$/,
   },
   email: {
     type: String,
