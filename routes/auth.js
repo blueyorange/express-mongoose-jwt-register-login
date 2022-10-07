@@ -23,47 +23,12 @@ passport.use(new GoogleStrategy({
   callbackURL: '/auth/oauth2/redirect/google',
   scope: [ 'profile' ]
 }, async function verify(issuer, profile, cb) {
-  console.log(issuer, profile)
   const user = await User.findOne({id: profile.id, source: issuer})
   if (!user) {
     return User.create({source : issuer, id : profile.id, username: profile.displayName, name : profile.name.givenName, surname : profile.name.familyName})
   } else {
     return cb(null, user)
   }
-  // db.get('SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?', [
-  //   issuer,
-  //   profile.id
-  // ], function(err, row) {
-  //   if (err) { return cb(err); }
-  //   if (!row) {
-  //     db.run('INSERT INTO users (name) VALUES (?)', [
-  //       profile.displayName
-  //     ], function(err) {
-  //       if (err) { return cb(err); }
-
-  //       var id = this.lastID;
-  //       db.run('INSERT INTO federated_credentials (user_id, provider, subject) VALUES (?, ?, ?)', [
-  //         id,
-  //         issuer,
-  //         profile.id
-  //       ], function(err) {
-  //         if (err) { return cb(err); }
-  //         var user = {
-  //           id: id,
-  //           name: profile.displayName
-  //         };
-  //         return cb(null, user);
-  //       });
-  //     });
-  //   } else {
-  //     db.get('SELECT * FROM users WHERE id = ?', [ row.user_id ], function(err, row) {
-  //       if (err) { return cb(err); }
-  //       if (!row) { return cb(null, false); }
-  //       return cb(null, row);
-  //     });
-  //   // }
-  // }
-  // );
 }));
 
 passport.serializeUser(function(user, cb) {
